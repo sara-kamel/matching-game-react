@@ -5,10 +5,9 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { findShownItem, shuffleArray } from "./helper";
+import {  shuffleArray } from "./helper";
 
 const Item = styled(Paper)(({ theme }) => ({
-  // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
@@ -17,29 +16,46 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function App() {
-  const [shuffledItems, setShuffledItems] = useState([]);
-  // const [prevImage, setPrevImage] = useState([]);
+  const [shuffledItems, setShuffledItems] = useState(() => {
+    return shuffleArray([...MatchingList]);
+  });
+  const [matchedItems, setMatchedItems] = useState([]);
 
   useEffect(() => {
-    setShuffledItems(shuffleArray([...MatchingList]));
-  }, []);
+    if (matchedItems.length) {
+      setTimeout(() => {
+        const newList = [...shuffledItems];
+        const firstItem = newList.find((i) => i.name === matchedItems[0].name);
+        const secondItem = newList.find((i) => i.name === matchedItems[1].name);
+        firstItem.status = "matching";
+        secondItem.status = "matching";
+        setShuffledItems(newList);
+      }, 1000);
+    }
+  }, [matchedItems]);
 
   function comparisonItems(item) {
-    const newList = [...shuffledItems] 
-    const shownItem = findShownItem(newList);
-    item.status = "show";
-    if (!shownItem) {
-      setShuffledItems(newList)
-      return;
+    if(item.status === 'matching') return;
+
+    const newList = [...shuffledItems];
+    const filteredItems = newList.filter((i) => i.status === "show");
+    let shownItem = null;
+    if (filteredItems.length > 1) {
+      newList.forEach((i) => {
+        if (i.status === "show") i.status = "init";
+      });
+    } else if (filteredItems.length === 1) {
+      // only one item is shown
+      shownItem = filteredItems[0];
     }
-    setShuffledItems(newList)
-    //  else {
 
-    //   item.category === shownItem.category
-    //     ? item.status === "matching" && shownItem.status === "matching"
-    //     : item.status === "init" && shownItem.status === "init";
+    const currentItem = newList.find((i) => i.name === item.name);
+    currentItem.status = "show";
+    if (shownItem && currentItem.category === shownItem.category) {
+      setMatchedItems([currentItem, shownItem]);
+    }
 
-    // }
+    setShuffledItems(newList);
   }
 
   return (
@@ -62,6 +78,7 @@ function App() {
                     ? { background: "green" }
                     : { background: "rgb(255 49 49)" }
                 }
+                className={item.status=== 'matching' ? 'matched-item': 'shown-item'}
                 onClick={() => {
                   comparisonItems(item);
                 }}
@@ -73,7 +90,9 @@ function App() {
                     src={item.image}
                     alt={item.name}
                   />
-                ) : ""}
+                ) : (
+                  ""
+                )}
               </Item>
             </Grid>
           ))}
@@ -84,3 +103,4 @@ function App() {
 }
 
 export default App;
+
