@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import {  shuffleArray } from "./helper";
+import { shuffleArray } from "./helper";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -25,7 +25,7 @@ function App() {
     if (matchedItems.length) {
       setTimeout(() => {
         const newList = [...shuffledItems];
-        for (let i = 0; i < matchedItems.length; i++){
+        for (let i = 0; i < matchedItems.length; i++) {
           newList.forEach((item) => {
             if (item.name === matchedItems[i].name) item.status = "matching";
           });
@@ -36,18 +36,21 @@ function App() {
   }, [matchedItems, shuffledItems]);
 
   function comparisonItems(item) {
-    if(item.status === 'matching') return;
+    if (item.status === "matching") return;
     const newList = [...shuffledItems];
     const filteredItems = newList.filter((i) => i.status === "show");
     let shownItem = null;
     if (filteredItems.length > 1) {
-      filteredItems.forEach((i) => i.status = "init");
+      filteredItems.forEach((i) => (i.status = "init"));
     } else if (filteredItems.length === 1) {
-      // only one item is shown
       shownItem = filteredItems[0];
     }
     item.status = "show";
-    if ((shownItem && shownItem.category  === item.category ) && shownItem.name !== item.name) {
+    if (
+      shownItem &&
+      shownItem.category === item.category &&
+      shownItem.name !== item.name
+    ) {
       setMatchedItems([item, shownItem]);
     }
     setShuffledItems(newList);
@@ -59,22 +62,20 @@ function App() {
         <h1 className="header">Matching Game</h1>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-
-     
         <Grid
           container
           margin={{ xs: 5, md: 30 }}
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-        
-      <h5 className="subheader">Matching by Category</h5>
-  
-          
+          <h5 className="subheader">Matching by Category</h5>
+
           {shuffledItems.map((item) => (
             <Grid key={item.name} xs={2} sm={4} md={4}>
               <Item
-                className={item.status=== 'matching' ? 'matched-item': 'shown-item'}
+                className={
+                  item.status === "matching" ? "matched-item" : "shown-item"
+                }
                 onClick={() => {
                   comparisonItems(item);
                 }}
@@ -99,4 +100,3 @@ function App() {
 }
 
 export default App;
-

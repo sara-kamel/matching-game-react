@@ -7,7 +7,4 @@ export const shuffleArray = (array) => {
   return array;
 };
 
-export function findShownItem(list) {
-  const item = list.find((item) => item.status === "show");
-  return item;
-}
+
