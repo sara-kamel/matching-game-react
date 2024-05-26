@@ -1,38 +1,45 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import MatchingList from "./MatchingList";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { shuffleArray } from "./helper";
+import { findShownItem, shuffleArray } from "./helper";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
+  height: "100px",
 }));
 
 function App() {
   const [shuffledItems, setShuffledItems] = useState([]);
-  const [prevImage, setPrevImage] = useState([]);
+  // const [prevImage, setPrevImage] = useState([]);
 
   useEffect(() => {
     setShuffledItems(shuffleArray([...MatchingList]));
   }, []);
 
   function comparisonItems(item) {
-    if (!prevImage) {
+    const newList = [...shuffledItems] 
+    const shownItem = findShownItem(newList);
+    item.status = "show";
+    if (!shownItem) {
+      setShuffledItems(newList)
       return;
     }
-    if (prevImage.category === item.category && prevImage.name !== item.name) {
-      let filteredItems = shuffledItems.filter(
-        (item) => item.category !== prevImage.category
-      );
-      setShuffledItems(filteredItems);
-    }
+    setShuffledItems(newList)
+    //  else {
+
+    //   item.category === shownItem.category
+    //     ? item.status === "matching" && shownItem.status === "matching"
+    //     : item.status === "init" && shownItem.status === "init";
+
+    // }
   }
 
   return (
@@ -50,21 +57,23 @@ function App() {
           {shuffledItems.map((item) => (
             <Grid key={item.name} xs={2} sm={4} md={4}>
               <Item
-                background="black"
-                height="100px"
+                style={
+                  item.status === "matching"
+                    ? { background: "green" }
+                    : { background: "rgb(255 49 49)" }
+                }
                 onClick={() => {
-                  setPrevImage(item);
-                  console.log(item);
-                  console.log(prevImage);
                   comparisonItems(item);
                 }}
               >
-                <img
-                  max-width="100px"
-                  height="100px"
-                  src={item.image}
-                  alt={item.name}
-                />
+                {item.status === "show" ? (
+                  <img
+                    max-width="100px"
+                    height="100px"
+                    src={item.image}
+                    alt={item.name}
+                  />
+                ) : ""}
               </Item>
             </Grid>
           ))}
