@@ -5,6 +5,17 @@
 }
 
 .matched-item {
+  background: green !important;
   opacity: 0.6;
   transition: opacity 0.5s ease !important;
 }
+.shown-item{
+ background: rgb(255 49 49) !important;
+}
+ .subheader{
+  background: lightblue;
+  width: 100%;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
+ }
