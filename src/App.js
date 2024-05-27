@@ -15,13 +15,15 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   height: "100px",
 }));
- 
 
+const NewCopyArray = [...MatchingList];
+const levelOneItems = sliceArray(NewCopyArray, 0, 3);
+const levelTwoItems = sliceArray(NewCopyArray, 0, 6);
+const levelThreeItems = sliceArray(NewCopyArray, 0, 8);
+const levelFourItems = sliceArray(NewCopyArray, 0, 10);
 
-
-const levelOneItems = sliceArray(MatchingList, 0, 3);
-console.log(levelOneItems)
 function App() {
+  const [subheader, setSubheader] = useState("Level One");
   const [shuffledItems, setShuffledItems] = useState(() => {
     return shuffleArray([...levelOneItems]);
   });
@@ -39,7 +41,21 @@ function App() {
         setShuffledItems(newList);
       }, 500);
     }
-  }, [matchedItems, shuffledItems]);
+  }, [matchedItems]);
+
+  useEffect(() => {
+    setLevel("Level One", levelOneItems);
+    setLevel("Level Two", levelTwoItems);
+    setLevel("Level Three", levelThreeItems);
+    setLevel("Level Four", levelFourItems);
+  }, [subheader]);
+
+  function setLevel(value, list) {
+    if (subheader === value) {
+      const Level = () => shuffleArray([...list]);
+      return setShuffledItems(Level);
+    }
+  }
 
   function comparisonItems(item) {
     if (item.status === "matching") return;
@@ -52,34 +68,35 @@ function App() {
       shownItem = filteredItems[0];
     }
     item.status = "show";
-    if (
-      shownItem &&
-      shownItem.name === item.name &&
-      shownItem.id !== item.id
-    ) {
+    if (shownItem && shownItem.name === item.name && shownItem.id !== item.id) {
       setMatchedItems([item, shownItem]);
     }
     setShuffledItems(newList);
   }
 
+  const handleChangeLevel = (value1, value2) => {
+    if (subheader === value1) {
+      setSubheader(value2);
+    } 
+  };
   return (
     <>
       <Box>
         <h1 className="header">Matching Game</h1>
       </Box>
-      
-      <Box sx={{ flexGrow: 1 }}> 
+
+      <Box sx={{ flexGrow: 1 }}>
         <Grid
           container
-          margin={{ xs: 5, md: 30 }}
+          margin ={{ xs: 5, md: 10 }}  
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          <h5 className="subheader">Level One</h5>
-
+          <h5 className="subheader">{subheader}</h5>
           {shuffledItems.map((item) => (
-            <Grid key={item.id} xs={2} sm={4} md={6}>
+            <Grid key={item.id} xs={2} sm={4} md={subheader === "Level One"? 6 : 3}>
               <Item
+            
                 className={
                   item.status === "matching" ? "matched-item" : "shown-item"
                 }
@@ -100,9 +117,19 @@ function App() {
               </Item>
             </Grid>
           ))}
-        <Button variant="contained">Next</Button>
+          
         </Grid>
-     
+        <Button
+              variant="contained"
+              onClick={() => {
+                handleChangeLevel("Level One", "Level Two")
+                handleChangeLevel("Level Two", "Level Three")
+                handleChangeLevel("Level Three", "Level Four")
+                handleChangeLevel("Level Four", "Level One")
+              }}
+            >
+              Next
+            </Button>
       </Box>
     </>
   );
