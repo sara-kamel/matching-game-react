@@ -5,7 +5,8 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { shuffleArray } from "./helper";
+import { shuffleArray, sliceArray } from "./helper";
+import { Button } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -14,10 +15,15 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   height: "100px",
 }));
+ 
 
+
+
+const levelOneItems = sliceArray(MatchingList, 0, 3);
+console.log(levelOneItems)
 function App() {
   const [shuffledItems, setShuffledItems] = useState(() => {
-    return shuffleArray([...MatchingList]);
+    return shuffleArray([...levelOneItems]);
   });
   const [matchedItems, setMatchedItems] = useState([]);
 
@@ -31,7 +37,7 @@ function App() {
           });
         }
         setShuffledItems(newList);
-      }, 1000);
+      }, 500);
     }
   }, [matchedItems, shuffledItems]);
 
@@ -48,8 +54,8 @@ function App() {
     item.status = "show";
     if (
       shownItem &&
-      shownItem.category === item.category &&
-      shownItem.name !== item.name
+      shownItem.name === item.name &&
+      shownItem.id !== item.id
     ) {
       setMatchedItems([item, shownItem]);
     }
@@ -61,17 +67,18 @@ function App() {
       <Box>
         <h1 className="header">Matching Game</h1>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
+      
+      <Box sx={{ flexGrow: 1 }}> 
         <Grid
           container
           margin={{ xs: 5, md: 30 }}
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          <h5 className="subheader">Matching by Category</h5>
+          <h5 className="subheader">Level One</h5>
 
           {shuffledItems.map((item) => (
-            <Grid key={item.name} xs={2} sm={4} md={4}>
+            <Grid key={item.id} xs={2} sm={4} md={6}>
               <Item
                 className={
                   item.status === "matching" ? "matched-item" : "shown-item"
@@ -93,7 +100,9 @@ function App() {
               </Item>
             </Grid>
           ))}
+        <Button variant="contained">Next</Button>
         </Grid>
+     
       </Box>
     </>
   );
