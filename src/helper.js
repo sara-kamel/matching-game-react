@@ -18,3 +18,25 @@ export const shuffleArray = (array) => {
   return array;
 };
 
+export function setLevel(list, subheader ) {
+  const NewCopyArray = [...list];
+const levelOneItems = sliceArray(NewCopyArray, 0, 3);
+const levelTwoItems = sliceArray(NewCopyArray, 0, 6);
+const levelThreeItems = sliceArray(NewCopyArray, 0, 8);
+const levelFourItems = sliceArray(NewCopyArray, 0, 10);
+  let level = null;
+  if (subheader === "Level One") {
+    level = () => shuffleArray([...levelOneItems]);
+  }
+  if (subheader === "Level Two") {
+    level = () => shuffleArray([...levelTwoItems]);
+  }
+  if (subheader === "Level Three") {
+    level = () => shuffleArray([...levelThreeItems]);
+  }
+  if (subheader === "Level Four") {
+    level = () => shuffleArray([...levelFourItems]);
+  }
+  console.log(level)
+  return level;
+}
