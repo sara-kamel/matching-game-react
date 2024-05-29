@@ -14,13 +14,14 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
   height: "100px",
+  width: "100px",
 }));
 
-const levelOneItems = sliceArray(MatchingList, 0, 3);
+const levelOneItems = sliceArray(MatchingList, 0, 4);
 function App() {
   const [subheader, setSubheader] = useState("Level One");
   const [shuffledItems, setShuffledItems] = useState(() => {
-    return shuffleArray([...levelOneItems]);
+    return shuffleArray(levelOneItems);
   });
   const [matchedItems, setMatchedItems] = useState([]);
 
@@ -85,19 +86,21 @@ function App() {
         </ButtonGroup>
       </Stack>
       <Box sx={{ flexGrow: 1 }}>
+      <h4 className="subheader">{subheader}</h4>
         <Grid
           container
-          margin={{ xs: 5, md: 10 }}
-          spacing={{ xs: 2, md: 3 }}
+          width = {{ xs: "80%", md:" 50%"}}
+          margin="auto"
+          spacing={{ xs: 2, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          <h5 className="subheader">{subheader}</h5>
+     
           {shuffledItems.map((item) => (
             <Grid
               key={item.id}
               xs={2}
-              sm={4}
-              md={subheader === "Level One" ? 6 : 3}
+              sm={2}
+              md={3}
             >
               <Item
                 className={
@@ -109,8 +112,8 @@ function App() {
               >
                 {item.status === "show" ? (
                   <img
-                    max-width="100px"
-                    height="100px"
+                   height= "100px"
+                    width= "100px"
                     src={item.image}
                     alt={item.name}
                   />
