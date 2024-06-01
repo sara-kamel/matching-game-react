@@ -13,11 +13,11 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: "center",
   color: theme.palette.text.secondary,
-  height: "100px",
-  width: "100px",
+  height: "150px",
+  width: "150px",
 }));
-
-const levelOneItems = sliceArray(MatchingList, 0, 4);
+ const list = [...MatchingList]
+const levelOneItems = sliceArray(list, 0, 4);
 function App() {
   const [subheader, setSubheader] = useState("Level One");
   const [shuffledItems, setShuffledItems] = useState(() => {
@@ -66,8 +66,6 @@ function App() {
       setSubheader("Level Two");
     } else if (subheader === "Level Two") {
       setSubheader("Level Three");
-    } else if (subheader === "Level Three") {
-      setSubheader("Level Four");
     } else {
       setSubheader("Level One");
     }
@@ -82,14 +80,13 @@ function App() {
           <Button onClick={() => setSubheader("Level One")}>Easy</Button>
           <Button onClick={() => setSubheader("Level Two")}>Medium</Button>
           <Button onClick={() => setSubheader("Level Three")}>Hard</Button>
-          <Button onClick={() => setSubheader("Level Four")}>Harder</Button>
         </ButtonGroup>
       </Stack>
       <Box sx={{ flexGrow: 1 }}>
       <h4 className="subheader">{subheader}</h4>
         <Grid
           container
-          width = {{ xs: "80%", md:" 50%"}}
+          width = {{ xs: "80%", md: subheader === "Level One" ? "50%" : "70%" }}
           margin="auto"
           spacing={{ xs: 2, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
@@ -100,7 +97,7 @@ function App() {
               key={item.id}
               xs={2}
               sm={2}
-              md={3}
+              md={subheader === "Level One" ? 3 :2}
             >
               <Item
                 className={
@@ -112,8 +109,8 @@ function App() {
               >
                 {item.status === "show" ? (
                   <img
-                   height= "100px"
-                    width= "100px"
+                   height= "150px"
+                    width= "150px"
                     src={item.image}
                     alt={item.name}
                   />
@@ -124,9 +121,12 @@ function App() {
             </Grid>
           ))}
         </Grid>
+        <br/>
+        <Stack direction="row" justifyContent="center">
         <Button variant="contained" onClick={() => handleChangeLevel()}>
           Next Level
         </Button>
+        </Stack>
       </Box>
     </>
   );
