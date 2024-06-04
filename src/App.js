@@ -7,6 +7,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { shuffleArray, setLevel } from './helper';
 import { Button, ButtonGroup, Stack } from '@mui/material';
+import Alert from '@mui/material/Alert';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -21,6 +22,7 @@ function App() {
     return shuffleArray([...setLevel(MatchingList, itemsCount)]);
   });
   const [matchedItems, setMatchedItems] = useState([]);
+  const [isAllMatch, setIsAllMatch] = useState(false);
 
   useEffect(() => {
     if (matchedItems.length) {
@@ -61,6 +63,17 @@ function App() {
   const handleChangeLevel = (level, num) => {
     setSubheader(level);
     setItemsCount(num);
+    checkIfAllMatch();
+  };
+
+  const checkIfAllMatch = () => {
+    shuffledItems.forEach((i) => {
+      if (i.status === 'matching')
+        setIsAllMatch(true);
+        setTimeout(() => {
+          setIsAllMatch(false);
+        }, 3000);  
+    });
   };
   return (
     <>
@@ -74,16 +87,19 @@ function App() {
           <Button onClick={() => handleChangeLevel('Level Three', 9)}>Hard</Button>
         </ButtonGroup>
       </Stack>
+
+      {isAllMatch && <Alert severity="success">Great Job! you found all matching pictures!</Alert>}
+
       <Box sx={{ flexGrow: 1 }}>
         <h4 className="subheader">{subheader}</h4>
         <Grid
           container
-          width={{ xs: '100%', sm: '90%', md: subheader === "Level One"? '50%': '75%' }}
+          width={{ xs: '100%', sm: '90%', md: subheader === 'Level One' ? '50%' : '75%' }}
           margin="auto"
           spacing={{ xs: 2, md: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}>
           {shuffledItems.map((item) => (
-            <Grid key={item.id} xs={2} sm={2} md={subheader === "Level One"? 3 : 2}>
+            <Grid key={item.id} xs={2} sm={2} md={subheader === 'Level One' ? 3 : 2}>
               <Item
                 className={item.status === 'matching' ? 'matched-item' : 'shown-item'}
                 onClick={() => {
@@ -93,11 +109,10 @@ function App() {
                   <div
                     style={{
                       backgroundImage: `url(${item.image})`,
-                      backgroundSize:"cover",
+                      backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      height: "100%",
-                    }}>
-                  </div>
+                      height: '100%',
+                    }}></div>
                 ) : (
                   ''
                 )}
