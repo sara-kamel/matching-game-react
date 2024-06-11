@@ -31,7 +31,7 @@ Contributions are welcome! If you have suggestions for improvements or new featu
  ![desktop](https://raw.githubusercontent.com/sara-kamel/matching-game-react/main/src/screenshots/desktop.png)
 
  ##### on Ipad
- i[ipad](https://raw.githubusercontent.com/sara-kamel/matching-game-react/main/src/screenshots/ipad.png)
+ ![ipad](https://raw.githubusercontent.com/sara-kamel/matching-game-react/main/src/screenshots/ipad.png)
  
  ##### on Mobile
- i[mobile](https://raw.githubusercontent.com/sara-kamel/matching-game-react/main/src/screenshots/mobile.png)
+ ![mobile](https://raw.githubusercontent.com/sara-kamel/matching-game-react/main/src/screenshots/mobile.png)
