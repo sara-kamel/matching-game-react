@@ -16,15 +16,15 @@ Contributions are welcome! If you have suggestions for improvements or new featu
 
 ### Steps to Contribute
 - Fork the repository.
-- Create a new branch: git checkout -b my-feature-branch.
-- Make your changes and commit them: git commit -m 'Add some feature'.
-- Push to the branch: git push origin my-feature-branch.
+- Create a new branch: `git checkout -b my-feature-branch`.
+- Make your changes and commit them: `git commit -m 'Add some feature`'.
+- Push to the branch: `git push origin my-feature-branch`.
 - Submit a pull request.
 
 ### How to run application
 - Clone this repository
-- Navigate to the root direcotry and run npm install
-- Run the application by running npm start
+- Navigate to the root direcotry and run `npm install`
+- Run the application by running `npm start`
 
 ### Screenshots
  ##### on Desktop
