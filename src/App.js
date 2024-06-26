@@ -61,19 +61,19 @@ function App() {
   }
 
   const handleChangeLevel = (level, num) => {
+    checkIfAllMatch();
     setSubheader(level);
     setItemsCount(num);
-    checkIfAllMatch();
   };
 
+  const getAlert = () => {
+    setIsAllMatch(true);
+    setTimeout(() => {
+      setIsAllMatch(false);
+    }, 3000);
+  };
   const checkIfAllMatch = () => {
-    shuffledItems.forEach((i) => {
-      if (i.status === 'matching')
-        setIsAllMatch(true);
-        setTimeout(() => {
-          setIsAllMatch(false);
-        }, 3000);  
-    });
+    shuffledItems.forEach((i) => (i.status === 'matching' ? getAlert() : setIsAllMatch(false)));
   };
   return (
     <>
