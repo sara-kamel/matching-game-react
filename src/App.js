@@ -37,6 +37,7 @@ function App() {
           });
         }
         setShuffledItems(newList);
+        checkIfAllMatch();
       }, 500);
     }
   }, [matchedItems]);
@@ -66,7 +67,6 @@ function App() {
   const handleChangeLevel = (level, num) => {
     setSubheader(level);
     setItemsCount(num);
-    checkIfAllMatch();
   };
 
   const getAlert = () => {
@@ -76,7 +76,8 @@ function App() {
     }, 3000);
   };
   const checkIfAllMatch = () => {
-    shuffledItems.forEach((i) => (i.status === 'matching' ? getAlert() : setIsAllMatch(false)));
+    const allMatching = shuffledItems.every((i) => i.status === 'matching');
+    allMatching ? getAlert() : setIsAllMatch(false);
   };
   return (
     <>
