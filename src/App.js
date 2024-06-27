@@ -10,6 +10,7 @@ import Alert from '@mui/material/Alert';
 
 const Item = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
+  borderRadius: theme.spacing(1),
   height: '150px',
   width: '85%',
   [theme.breakpoints.down('sm')]: {
