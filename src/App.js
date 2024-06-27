@@ -3,16 +3,19 @@ import './App.css';
 import MatchingList from './MatchingList';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import { shuffleArray, setLevel } from './helper';
 import { Button, ButtonGroup, Stack } from '@mui/material';
 import Alert from '@mui/material/Alert';
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
+const Item = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
   height: '150px',
+  width: '85%',
+  [theme.breakpoints.down('sm')]: {
+    height: '70px',
+    padding: theme.spacing(0.5),
+  },
 }));
 
 function App() {
@@ -61,9 +64,9 @@ function App() {
   }
 
   const handleChangeLevel = (level, num) => {
-    checkIfAllMatch();
     setSubheader(level);
     setItemsCount(num);
+    checkIfAllMatch();
   };
 
   const getAlert = () => {
@@ -94,12 +97,22 @@ function App() {
         <h4 className="subheader">{subheader}</h4>
         <Grid
           container
-          width={{ xs: '100%', sm: '90%', md: subheader === 'Level One' ? '50%' : '75%' }}
+          justifyContent="center"
+          width={{
+            xs: '90%',
+            sm: '70%',
+            md: '60%',
+          }}
           margin="auto"
-          spacing={{ xs: 2, md: 2 }}
+          spacing={{ xs: 1, sm: 2 }}
           columns={{ xs: 4, sm: 8, md: 12 }}>
           {shuffledItems.map((item) => (
-            <Grid key={item.id} xs={2} sm={2} md={subheader === 'Level One' ? 3 : 2}>
+            <Grid
+              key={item.id}
+              xs={1}
+              sm={2}
+              md={subheader === 'Level Three' ? 2 : 3}
+              marginTop="20px">
               <Item
                 className={item.status === 'matching' ? 'matched-item' : 'shown-item'}
                 onClick={() => {
